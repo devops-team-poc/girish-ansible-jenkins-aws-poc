@@ -1,0 +1,39 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: creating key pair
+    ec2_key:
+       name: "{{ key }}"
+       region: "{{ region }}"
+       key_material: "{{ lookup('file', '/home/ubuntu/ansible-jenkins-poc/ansible-key') }}"
+
+  - name: Launching first instance
+    ec2_instance:
+      instance_type: "{{ insta_type }}"
+      image_id: "{{ ami }}"
+      key_name: "{{ key }}"
+      region: "{{ region }}"
+      security_group: "{{ sg_group }}"
+      vpc_subnet_id: "{{ subnet }}"
+      network:
+        assign_public_ip: true
+      tags:
+        Name: web1
+        Env: Test
+        Team: Dev
+
+  - name: Launching second instance
+    ec2_instance:
+      instance_type: "{{ insta_type }}"
+      image_id: "{{ ami }}"
+      key_name: "{{ key }}"
+      region: "{{ region }}"
+      security_group: "{{ sg_group }}"
+      vpc_subnet_id: "{{ subnet }}"
+      network:
+        assign_public_ip: true
+      tags:
+        Name: web2
+        Env: Prod
+        Team: DevOps
+
