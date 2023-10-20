@@ -1,5 +1,5 @@
 - hosts: localhost
-  gather_facts: false
+  gather_facts: false           # gathering facts is set to off because we are performing this task on the localhost
   tasks:
   - name: creating key pair
     ec2_key:
